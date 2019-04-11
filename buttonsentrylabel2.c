@@ -10,6 +10,7 @@
 
 typedef struct _node{
     GtkWidget *label[3];
+  int Bandera;
 }NODO;
 
 GtkWidget *AddButton(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
@@ -34,7 +35,7 @@ gint main ( gint argc, gchar *argv[])
   gtk_init(&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size(GTK_WINDOW(window),320,200);
+  gtk_window_set_default_size(GTK_WINDOW(window),600,200);
   gtk_container_border_width(GTK_CONTAINER(window),5);
 
   
@@ -125,13 +126,21 @@ void CambiaLabel(GtkButton *button, gpointer data)
   GdkColor color;
   int i;
   NODO *datos=(NODO *)data;
-  
-  //gdk_color_parse("#368f1f", &color);
-  color.red= 65000;
-  color.green= 30000;
-  color.blue= 55000;
-  
+  /*color.red= 65000;
+    color.green= 30000;
+    color.blue= 55000; 
+  */
+  if(datos->Bandera==0)
+    {
+      gdk_color_parse("#E14E4E", &color);      
+      datos->Bandera=1;
+    }
+  else
+    {      
+      gdk_color_parse("#000000", &color);      
+      datos->Bandera=0;
+    }
   for (i=0; i<3; i++)
-    gtk_widget_modify_fg(GTK_WIDGET(datos->label[i]), GTK_STATE_NORMAL, &color);
- 
+	gtk_widget_modify_fg(GTK_WIDGET(datos->label[i]), GTK_STATE_NORMAL, &color);
 }
+    
