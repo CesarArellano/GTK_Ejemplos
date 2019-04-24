@@ -1,12 +1,16 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
+typedef struct _node{
+    char Res[100];
+}TipoNodo;
 
 GtkWidget *AddButton(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 GtkWidget *AddButtonBlue(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 GtkWidget *AddButtonGray(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 void InsertarCampo(GtkButton *button, gpointer data);
 void BorrarCampo(GtkButton *button, gpointer data);
+void Operacion(GtkButton *button, gpointer data);
 void BorraNum(GtkButton *button, gpointer data);
 void MostrarResultado(GtkButton *button, gpointer data);
 void StopTheApp(GtkWidget *window, gpointer data);
@@ -40,7 +44,7 @@ gint main ( gint argc, gchar *argv[])
   button = AddButtonBlue(horizontalbox,"CE",BorrarCampo,entrybox);
   button = AddButtonBlue(horizontalbox,"C",BorraNum,entrybox);
   button = AddButtonBlue(horizontalbox,"%",InsertarCampo,entrybox);
-  button = AddButtonBlue(horizontalbox,"/",InsertarCampo,entrybox);
+  button = AddButtonBlue(horizontalbox,"/",Operacion,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
 
@@ -48,21 +52,21 @@ gint main ( gint argc, gchar *argv[])
   button = AddButton(horizontalbox,"7",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"8",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"9",InsertarCampo,entrybox);
-  button = AddButton(horizontalbox,"x",BorrarCampo,entrybox);
+  button = AddButton(horizontalbox,"x",Operacion,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
 
   button = AddButton(horizontalbox,"4",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"5",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"6",InsertarCampo,entrybox);
-  button = AddButton(horizontalbox,"+",InsertarCampo,entrybox);
+  button = AddButton(horizontalbox,"+",Operacion,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
 
   button = AddButton(horizontalbox,"1",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"2",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"3",InsertarCampo,entrybox);
-  button = AddButton(horizontalbox,"-",InsertarCampo,entrybox);
+  button = AddButton(horizontalbox,"-",Operacion,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
 
@@ -148,37 +152,21 @@ void BorraNum(GtkButton *button, gpointer data)
   gtk_entry_set_text(GTK_ENTRY(data),Nuevo);
 }
 
+void Operacion(GtkButton *button, gpointer data)
+{
+  TipoNodo *datos=(TipoNodo *)data;
+  const gchar *Entrada, *Operacion;
+  Entrada =gtk_entry_get_text(GTK_ENTRY(data));
+  Operacion = gtk_button_get_label(button);
+  strcpy(datos->Res,Entrada);
+  strcat(datos->Res,Operacion);
+  gtk_entry_set_text(GTK_ENTRY(data)," ");
+}
+
 void MostrarResultado(GtkButton *button, gpointer data)
 {
-  float Numero1,Numero2,Res;
-  int Num1,Num2;
-  char Operacion,Resultado[20];
-  const gchar *Entrada;
-  Entrada =gtk_entry_get_text(GTK_ENTRY(data));
-  sscanf(Entrada,"%f%c%f",&Numero1,&Operacion,&Numero2);
-  switch(Operacion)
-  {
-    case 'x':
-    Res = Numero1 * Numero2;
-    break;
-    case '/':
-    Res = Numero1 / Numero2;
-    break;
-    case '+':
-    Res = Numero1 + Numero2;
-    break;
-    case '-':
-    Res = Numero1 - Numero2;
-    break;
-    case '%':
-    Num1=Numero1;
-    Num2=Numero2;
-    Res = Num1 % Num2;
-    break;
-  }
-  sprintf(Resultado,"%.3f",Res);
-
-  gtk_entry_set_text(GTK_ENTRY(data),Resultado);
+  TipoNodo *datos=(TipoNodo *)data;
+  gtk_entry_set_text(GTK_ENTRY(data),datos->Res);
 }
 
 void StopTheApp(GtkWidget *window, gpointer data)
