@@ -20,6 +20,7 @@ void BorraNum(GtkButton *button, gpointer data);
 void MostrarResultado(GtkButton *button, gpointer data);
 void StopTheApp(GtkWidget *window, gpointer data);
 void Imprimir(GtkButton *button, gpointer data);
+void Salir(GtkWidget *window, gpointer data);
 
 
 gint main ( gint argc, gchar *argv[])
@@ -30,13 +31,14 @@ gint main ( gint argc, gchar *argv[])
   GtkWidget *horizontalbox;
   GtkWidget *verticalbox;
   GtkWidget *entrybox;
+  GtkWidget *menu, *menu_bar, *root_menu;
+  GtkWidget *opc1,*opc2,*opc3,*opc4;
 
   gtk_init(&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size(GTK_WINDOW(window),300,400);
-  gtk_container_border_width(GTK_CONTAINER(window),7);
-
+  gtk_container_border_width(GTK_CONTAINER(window),0);
 
   verticalbox = gtk_vbox_new(TRUE,5);
 
@@ -44,6 +46,43 @@ gint main ( gint argc, gchar *argv[])
 
   horizontalbox = gtk_hbox_new(TRUE,5);
 
+  //MENÚ
+  menu_bar= gtk_menu_bar_new();
+
+  menu = gtk_menu_new();
+  opc1 = gtk_menu_item_new_with_label ("Borrar Pantalla");
+  opc2 = gtk_menu_item_new_with_label ("Salir");
+
+  gtk_signal_connect(GTK_OBJECT(opc1),"activate",GTK_SIGNAL_FUNC(BorrarCampo),entrybox);
+  gtk_signal_connect(GTK_OBJECT(opc2),"activate",GTK_SIGNAL_FUNC(StopTheApp),NULL);
+
+  gtk_menu_append(GTK_MENU(menu),opc1);
+  gtk_menu_append(GTK_MENU(menu),opc2);
+
+  root_menu = gtk_menu_item_new_with_label("Herramientas");
+
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM(root_menu),menu);
+  gtk_menu_bar_append(GTK_MENU_BAR(menu_bar),root_menu);
+
+  //Archivo
+  menu = gtk_menu_new();
+  opc3 = gtk_menu_item_new_with_label ("Leer");
+  opc4 = gtk_menu_item_new_with_label ("Guardar");
+
+  gtk_signal_connect(GTK_OBJECT(opc3),"activate",GTK_SIGNAL_FUNC(Leer_Arch),NULL);
+  gtk_signal_connect(GTK_OBJECT(opc4),"activate",GTK_SIGNAL_FUNC(StopTheApp),NULL);
+
+  gtk_menu_append(GTK_MENU(menu),opc3);
+  gtk_menu_append(GTK_MENU(menu),opc4);
+
+  root_menu = gtk_menu_item_new_with_label("Archivo");
+
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM(root_menu),menu);
+  gtk_menu_bar_append(GTK_MENU_BAR(menu_bar),root_menu);
+
+  //Fin del menú
+
+  gtk_box_pack_start(GTK_BOX(verticalbox),menu_bar,FALSE,FALSE,0);
   gtk_box_pack_start(GTK_BOX(verticalbox),entrybox,TRUE,TRUE,0);
 
   button = AddButtonBlue(horizontalbox,"CE",BorrarCampo,entrybox);
@@ -82,10 +121,7 @@ gint main ( gint argc, gchar *argv[])
 
   // Empaqueto en la caja principal / vertical la entrada de texto.
 
-
-
   gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(StopTheApp),NULL);
-
 
   gtk_container_add(GTK_CONTAINER(window),verticalbox);
 
@@ -202,6 +238,4 @@ void MostrarResultado(GtkButton *button, gpointer data)
 void StopTheApp(GtkWidget *window, gpointer data)
 {
     gtk_main_quit();
-
-
 }
