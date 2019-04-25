@@ -1,9 +1,12 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-typedef struct _node{
-    char Res[100];
-}TipoNodo;
+typedef struct def_Nodo 
+{
+  GtkWidget *button;
+  char Signo[2];
+  float Num;
+} TipoNodo;
 
 GtkWidget *AddButton(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 GtkWidget *AddButtonBlue(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
@@ -155,18 +158,43 @@ void BorraNum(GtkButton *button, gpointer data)
 void Operacion(GtkButton *button, gpointer data)
 {
   TipoNodo *datos=(TipoNodo *)data;
-  const gchar *Entrada, *Operacion;
+  const gchar *Entrada,*Operacion;
   Entrada =gtk_entry_get_text(GTK_ENTRY(data));
-  Operacion = gtk_button_get_label(button);
-  strcpy(datos->Res,Entrada);
-  strcat(datos->Res,Operacion);
+  Operacion = gtk_button_get_label(button); 
+  datos->Num =  atof(Entrada);
+  strcpy(datos->Signo,Operacion);
   gtk_entry_set_text(GTK_ENTRY(data)," ");
 }
 
 void MostrarResultado(GtkButton *button, gpointer data)
 {
+  char Resultado[100];
+  float Res;
+  int temp;
   TipoNodo *datos=(TipoNodo *)data;
-  gtk_entry_set_text(GTK_ENTRY(data),datos->Res);
+  const gchar *Entrada;
+  Entrada =gtk_entry_get_text(GTK_ENTRY(data));
+  switch(datos -> Signo[0])
+  {
+    case '+':
+      Res= datos -> Num + atof(Entrada);
+    break;
+    case '-':
+      Res= datos -> Num - atof(Entrada);
+    break;
+    case 'x':
+      Res= datos -> Num * atof(Entrada);
+    break;
+    case '/':
+      Res= datos -> Num / atof(Entrada);
+    break;
+    case '%':
+      temp = datos -> Num;
+      Res= temp % atoi(Entrada);
+    break;
+  }
+  sprintf(Resultado,"%.3f",Res);
+  gtk_entry_set_text(GTK_ENTRY(data),Resultado);
 }
 
 void StopTheApp(GtkWidget *window, gpointer data)

@@ -48,7 +48,7 @@ gint main ( gint argc, gchar *argv[])
   button = AddButton(horizontalbox,"7",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"8",InsertarCampo,entrybox);
   button = AddButton(horizontalbox,"9",InsertarCampo,entrybox);
-  button = AddButton(horizontalbox,"x",BorrarCampo,entrybox);
+  button = AddButton(horizontalbox,"x",InsertarCampo,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
 
