@@ -14,6 +14,7 @@ GtkWidget *AddButton(GtkWidget *theBox, const gchar *buttonText, gpointer CallBa
 GtkWidget *AddButtonBlue(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 GtkWidget *AddButtonGray(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 void InsertarCampo(GtkButton *button, gpointer data);
+void Leer_Arch(GtkWidget *button, gpointer data);
 void BorrarCampo(GtkButton *button, gpointer data);
 void Operacion(GtkButton *button, gpointer data);
 void BorraNum(GtkButton *button, gpointer data);
@@ -233,6 +234,21 @@ void MostrarResultado(GtkButton *button, gpointer data)
   }
   sprintf(Resultado,"%.3f",Res);
   gtk_entry_set_text(GTK_ENTRY(data),Resultado);
+}
+
+void Leer_Arch(GtkWidget *button, gpointer data)
+{
+  GtkWidget *dialog;
+  dialog = gtk_file_chooser_dialog_new("Escoge el documento a leer", GTK_WINDOW(data),
+    GTK_FILE_CHOOSER_ACTION_OPEN,GTK_STOCK_OK,
+    GTK_RESPONSE_OK,GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,NULL);
+  gtk_widget_show_all(dialog);
+  gint resp = gtk_dialog_run(GTK_DIALOG(dialog));
+  if(resp == GTK_RESPONSE_OK)
+      g_print("%s\n",gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog)));
+  else
+      g_print("Usted presiono cancelar");
+  gtk_widget_destroy(dialog);
 }
 
 void StopTheApp(GtkWidget *window, gpointer data)

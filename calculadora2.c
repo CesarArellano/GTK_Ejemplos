@@ -14,6 +14,7 @@ GtkWidget *AddButton(GtkWidget *theBox, const gchar *buttonText, gpointer CallBa
 GtkWidget *AddButtonBlue(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 GtkWidget *AddButtonGray(GtkWidget *theBox, const gchar *buttonText, gpointer CallBackFunction, GtkWidget *EntryBox);
 void InsertarCampo(GtkButton *button, gpointer data);
+void Leer_Arch(GtkButton *button, gpointer data);
 void BorrarCampo(GtkButton *button, gpointer data);
 void Operacion(GtkButton *button, gpointer data);
 void BorraNum(GtkButton *button, gpointer data);
@@ -48,7 +49,7 @@ gint main ( gint argc, gchar *argv[])
 
   button = AddButtonBlue(horizontalbox,"CE",BorrarCampo,entrybox);
   button = AddButtonBlue(horizontalbox,"C",BorraNum,entrybox);
-  button = AddButtonBlue(horizontalbox,"%",InsertarCampo,entrybox);
+  button = AddButtonBlue(horizontalbox,"%",Operacion,entrybox);
   button = AddButtonBlue(horizontalbox,"/",Operacion,entrybox);
   gtk_box_pack_start(GTK_BOX(verticalbox),horizontalbox,TRUE,TRUE,0);
   horizontalbox = gtk_hbox_new(TRUE,5);
@@ -202,6 +203,4 @@ void MostrarResultado(GtkButton *button, gpointer data)
 void StopTheApp(GtkWidget *window, gpointer data)
 {
     gtk_main_quit();
-
-
 }
